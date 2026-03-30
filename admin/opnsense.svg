@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="16" fill="#D94F00"/>
+  <text x="64" y="48" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">OPN</text>
+  <text x="64" y="68" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">sense</text>
+  <path d="M40 80 L64 100 L88 80" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

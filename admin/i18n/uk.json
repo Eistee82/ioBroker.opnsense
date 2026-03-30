@@ -1,0 +1,22 @@
+{
+    "connection": "З'єднання",
+    "connectionSettings": "Налаштування з'єднання",
+    "host": "Хост",
+    "hostHelp": "IP-адреса або ім'я хоста вашого OPNsense",
+    "hostRequired": "Хост є обов'язковим",
+    "port": "Порт",
+    "portHelp": "HTTPS-порт (за замовчуванням: 443)",
+    "apiKey": "API-ключ",
+    "apiKeyHelp": "API-ключ, згенерований у налаштуваннях користувача OPNsense",
+    "apiKeyRequired": "API-ключ є обов'язковим",
+    "apiSecret": "API-секрет",
+    "apiSecretHelp": "API-секрет із завантаженого файлу ключа",
+    "apiSecretRequired": "API-секрет є обов'язковим",
+    "advancedSettings": "Додаткові налаштування",
+    "pollInterval": "Інтервал опитування",
+    "pollIntervalHelp": "Як часто опитувати OPNsense (у секундах, мінімум 10)",
+    "requestTimeout": "Тайм-аут запиту",
+    "requestTimeoutHelp": "Тайм-аут для API-запитів (у секундах)",
+    "sslVerify": "Перевіряти SSL-сертифікат",
+    "sslVerifyHelp": "Вимкніть при використанні самопідписаного сертифіката"
+}

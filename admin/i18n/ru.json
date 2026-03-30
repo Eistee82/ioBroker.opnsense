@@ -1,0 +1,22 @@
+{
+    "connection": "Подключение",
+    "connectionSettings": "Настройки подключения",
+    "host": "Хост",
+    "hostHelp": "IP-адрес или имя хоста вашего OPNsense",
+    "hostRequired": "Хост обязателен",
+    "port": "Порт",
+    "portHelp": "HTTPS-порт (по умолчанию: 443)",
+    "apiKey": "API-ключ",
+    "apiKeyHelp": "API-ключ, сгенерированный в настройках пользователя OPNsense",
+    "apiKeyRequired": "API-ключ обязателен",
+    "apiSecret": "API-секрет",
+    "apiSecretHelp": "API-секрет из загруженного файла ключа",
+    "apiSecretRequired": "API-секрет обязателен",
+    "advancedSettings": "Дополнительные настройки",
+    "pollInterval": "Интервал опроса",
+    "pollIntervalHelp": "Как часто опрашивать OPNsense (в секундах, минимум 10)",
+    "requestTimeout": "Таймаут запроса",
+    "requestTimeoutHelp": "Таймаут для API-запросов (в секундах)",
+    "sslVerify": "Проверять SSL-сертификат",
+    "sslVerifyHelp": "Отключите при использовании самоподписанного сертификата"
+}

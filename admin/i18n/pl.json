@@ -1,0 +1,22 @@
+{
+    "connection": "Połączenie",
+    "connectionSettings": "Ustawienia połączenia",
+    "host": "Host",
+    "hostHelp": "Adres IP lub nazwa hosta zapory OPNsense",
+    "hostRequired": "Host jest wymagany",
+    "port": "Port",
+    "portHelp": "Port HTTPS (domyślnie: 443)",
+    "apiKey": "Klucz API",
+    "apiKeyHelp": "Klucz API wygenerowany w ustawieniach użytkownika OPNsense",
+    "apiKeyRequired": "Klucz API jest wymagany",
+    "apiSecret": "Sekret API",
+    "apiSecretHelp": "Sekret API z pobranego pliku klucza",
+    "apiSecretRequired": "Sekret API jest wymagany",
+    "advancedSettings": "Ustawienia zaawansowane",
+    "pollInterval": "Interwał odpytywania",
+    "pollIntervalHelp": "Jak często odpytywać OPNsense (w sekundach, minimum 10)",
+    "requestTimeout": "Limit czasu żądania",
+    "requestTimeoutHelp": "Limit czasu dla żądań API (w sekundach)",
+    "sslVerify": "Weryfikuj certyfikat SSL",
+    "sslVerifyHelp": "Wyłącz w przypadku certyfikatu samopodpisanego"
+}

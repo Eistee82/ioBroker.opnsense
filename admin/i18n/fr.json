@@ -1,0 +1,22 @@
+{
+    "connection": "Connexion",
+    "connectionSettings": "Paramètres de connexion",
+    "host": "Hôte",
+    "hostHelp": "Adresse IP ou nom d'hôte de votre pare-feu OPNsense",
+    "hostRequired": "L'hôte est requis",
+    "port": "Port",
+    "portHelp": "Port HTTPS (par défaut : 443)",
+    "apiKey": "Clé API",
+    "apiKeyHelp": "Clé API générée dans les paramètres utilisateur OPNsense",
+    "apiKeyRequired": "La clé API est requise",
+    "apiSecret": "Secret API",
+    "apiSecretHelp": "Secret API du fichier de clé téléchargé",
+    "apiSecretRequired": "Le secret API est requis",
+    "advancedSettings": "Paramètres avancés",
+    "pollInterval": "Intervalle d'interrogation",
+    "pollIntervalHelp": "Fréquence d'interrogation d'OPNsense (en secondes, minimum 10)",
+    "requestTimeout": "Délai d'attente",
+    "requestTimeoutHelp": "Délai d'attente pour les requêtes API (en secondes)",
+    "sslVerify": "Vérifier le certificat SSL",
+    "sslVerifyHelp": "Désactiver en cas de certificat auto-signé"
+}

@@ -1,0 +1,22 @@
+{
+    "connection": "连接",
+    "connectionSettings": "连接设置",
+    "host": "主机",
+    "hostHelp": "OPNsense 防火墙的 IP 地址或主机名",
+    "hostRequired": "主机为必填项",
+    "port": "端口",
+    "portHelp": "HTTPS 端口（默认：443）",
+    "apiKey": "API 密钥",
+    "apiKeyHelp": "在 OPNsense 用户设置中生成的 API 密钥",
+    "apiKeyRequired": "API 密钥为必填项",
+    "apiSecret": "API 密码",
+    "apiSecretHelp": "从下载的密钥文件中获取的 API 密码",
+    "apiSecretRequired": "API 密码为必填项",
+    "advancedSettings": "高级设置",
+    "pollInterval": "轮询间隔",
+    "pollIntervalHelp": "查询 OPNsense 的频率（秒，最少 10）",
+    "requestTimeout": "请求超时",
+    "requestTimeoutHelp": "API 请求的超时时间（秒）",
+    "sslVerify": "验证 SSL 证书",
+    "sslVerifyHelp": "使用自签名证书时禁用"
+}

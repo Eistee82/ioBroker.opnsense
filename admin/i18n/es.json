@@ -1,0 +1,22 @@
+{
+    "connection": "Conexión",
+    "connectionSettings": "Configuración de conexión",
+    "host": "Host",
+    "hostHelp": "Dirección IP o nombre de host de su cortafuegos OPNsense",
+    "hostRequired": "El host es obligatorio",
+    "port": "Puerto",
+    "portHelp": "Puerto HTTPS (predeterminado: 443)",
+    "apiKey": "Clave API",
+    "apiKeyHelp": "Clave API generada en la configuración de usuario de OPNsense",
+    "apiKeyRequired": "La clave API es obligatoria",
+    "apiSecret": "Secreto API",
+    "apiSecretHelp": "Secreto API del archivo de clave descargado",
+    "apiSecretRequired": "El secreto API es obligatorio",
+    "advancedSettings": "Configuración avanzada",
+    "pollInterval": "Intervalo de consulta",
+    "pollIntervalHelp": "Con qué frecuencia consultar OPNsense (en segundos, mínimo 10)",
+    "requestTimeout": "Tiempo de espera",
+    "requestTimeoutHelp": "Tiempo de espera para solicitudes API (en segundos)",
+    "sslVerify": "Verificar certificado SSL",
+    "sslVerifyHelp": "Desactivar si se usa un certificado autofirmado"
+}

@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.code-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+
+# Admin build (generated)
+admin/build/
+
+# TypeScript build output is committed for direct GitHub installation
+# build/

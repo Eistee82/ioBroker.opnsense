@@ -1,0 +1,22 @@
+{
+    "connection": "Verbindung",
+    "connectionSettings": "Verbindungseinstellungen",
+    "host": "Host",
+    "hostHelp": "IP-Adresse oder Hostname der OPNsense Firewall",
+    "hostRequired": "Host ist erforderlich",
+    "port": "Port",
+    "portHelp": "HTTPS-Port (Standard: 443)",
+    "apiKey": "API-Schlüssel",
+    "apiKeyHelp": "API-Schlüssel, der in den OPNsense Benutzereinstellungen generiert wurde",
+    "apiKeyRequired": "API-Schlüssel ist erforderlich",
+    "apiSecret": "API-Geheimnis",
+    "apiSecretHelp": "API-Geheimnis aus der heruntergeladenen Schlüsseldatei",
+    "apiSecretRequired": "API-Geheimnis ist erforderlich",
+    "advancedSettings": "Erweiterte Einstellungen",
+    "pollInterval": "Abfrageintervall",
+    "pollIntervalHelp": "Wie oft OPNsense abgefragt wird (in Sekunden, mindestens 10)",
+    "requestTimeout": "Anfrage-Timeout",
+    "requestTimeoutHelp": "Zeitüberschreitung für API-Anfragen (in Sekunden)",
+    "sslVerify": "SSL-Zertifikat prüfen",
+    "sslVerifyHelp": "Deaktivieren bei selbstsignierten Zertifikaten"
+}

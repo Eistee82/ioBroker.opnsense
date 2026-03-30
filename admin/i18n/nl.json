@@ -1,0 +1,22 @@
+{
+    "connection": "Verbinding",
+    "connectionSettings": "Verbindingsinstellingen",
+    "host": "Host",
+    "hostHelp": "IP-adres of hostnaam van uw OPNsense firewall",
+    "hostRequired": "Host is vereist",
+    "port": "Poort",
+    "portHelp": "HTTPS-poort (standaard: 443)",
+    "apiKey": "API-sleutel",
+    "apiKeyHelp": "API-sleutel gegenereerd in OPNsense gebruikersinstellingen",
+    "apiKeyRequired": "API-sleutel is vereist",
+    "apiSecret": "API-geheim",
+    "apiSecretHelp": "API-geheim uit het gedownloade sleutelbestand",
+    "apiSecretRequired": "API-geheim is vereist",
+    "advancedSettings": "Geavanceerde instellingen",
+    "pollInterval": "Polling-interval",
+    "pollIntervalHelp": "Hoe vaak OPNsense wordt bevraagd (in seconden, minimaal 10)",
+    "requestTimeout": "Verzoek-timeout",
+    "requestTimeoutHelp": "Timeout voor API-verzoeken (in seconden)",
+    "sslVerify": "SSL-certificaat verifiëren",
+    "sslVerifyHelp": "Schakel uit bij gebruik van een zelfondertekend certificaat"
+}

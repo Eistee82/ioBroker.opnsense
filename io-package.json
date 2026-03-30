@@ -1,0 +1,108 @@
+{
+    "common": {
+        "name": "opnsense",
+        "version": "0.0.1",
+        "news": {
+            "0.0.1": {
+                "en": "Initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Первый выпуск",
+                "pt": "Lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Version initiale",
+                "it": "Rilascio iniziale",
+                "es": "Lanzamiento inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "Перший випуск",
+                "zh-cn": "初始版本"
+            }
+        },
+        "titleLang": {
+            "en": "OPNsense Firewall",
+            "de": "OPNsense Firewall",
+            "ru": "OPNsense Брандмауэр",
+            "pt": "OPNsense Firewall",
+            "nl": "OPNsense Firewall",
+            "fr": "Pare-feu OPNsense",
+            "it": "Firewall OPNsense",
+            "es": "Cortafuegos OPNsense",
+            "pl": "OPNsense Firewall",
+            "uk": "OPNsense Брандмауер",
+            "zh-cn": "OPNsense 防火墙"
+        },
+        "desc": {
+            "en": "Monitor OPNsense firewall gateways, interfaces, traffic and services",
+            "de": "Überwachung von OPNsense Firewall Gateways, Interfaces, Traffic und Services",
+            "ru": "Мониторинг шлюзов, интерфейсов, трафика и служб OPNsense",
+            "pt": "Monitorar gateways, interfaces, tráfego e serviços do firewall OPNsense",
+            "nl": "Monitor OPNsense firewall gateways, interfaces, verkeer en diensten",
+            "fr": "Surveiller les passerelles, interfaces, trafic et services du pare-feu OPNsense",
+            "it": "Monitorare gateway, interfacce, traffico e servizi del firewall OPNsense",
+            "es": "Monitorear puertas de enlace, interfaces, tráfico y servicios del cortafuegos OPNsense",
+            "pl": "Monitorowanie bram, interfejsów, ruchu i usług zapory OPNsense",
+            "uk": "Моніторинг шлюзів, інтерфейсів, трафіку та служб OPNsense",
+            "zh-cn": "监控 OPNsense 防火墙网关、接口、流量和服务"
+        },
+        "authors": ["Eistee"],
+        "keywords": ["opnsense", "firewall", "network", "monitoring", "gateway"],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "build/main.js",
+        "icon": "opnsense.svg",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Eistee82/ioBroker.opnsense/main/admin/opnsense.png",
+        "type": "hardware",
+        "connectionType": "local",
+        "dataSource": "poll",
+        "compact": true,
+        "adminUI": {
+            "config": "json"
+        },
+        "tier": 3,
+        "dependencies": [
+            {
+                "js-controller": ">=6.0.11"
+            },
+            {
+                "admin": ">=7.0.23"
+            }
+        ],
+        "globalDependencies": [],
+        "messages": []
+    },
+    "native": {
+        "host": "",
+        "port": 443,
+        "apiKey": "",
+        "apiSecret": "",
+        "pollInterval": 30,
+        "sslVerify": true,
+        "requestTimeout": 10
+    },
+    "protectedNative": ["apiSecret"],
+    "encryptedNative": ["apiSecret"],
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "name": "Connected to OPNsense",
+                "type": "boolean",
+                "role": "indicator.connected",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
+}
