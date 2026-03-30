@@ -212,8 +212,8 @@ class OPNsense extends utils.Adapter {
             for (const [stateId, def] of Object.entries(interfaceStatisticsStates)) {
                 await this.ensureState(`${channelId}.statistics.${stateId}`, def);
             }
-            const bytesIn = parseInt(entry['bytes received'] || '0', 10);
-            const bytesOut = parseInt(entry['bytes transmitted'] || '0', 10);
+            const bytesIn = this.parseIntSafe(entry['received-bytes']);
+            const bytesOut = this.parseIntSafe(entry['sent-bytes']);
             // Calculate traffic speed (delta)
             const prev = this.previousTraffic.get(entry.name);
             if (prev && prev.timestamp > 0) {
@@ -233,10 +233,10 @@ class OPNsense extends utils.Adapter {
                 timestamp: now,
             });
             // Statistics
-            await this.setState(`${channelId}.statistics.packetsIn`, parseInt(entry['packets received'] || '0', 10), true);
-            await this.setState(`${channelId}.statistics.packetsOut`, parseInt(entry['packets transmitted'] || '0', 10), true);
-            await this.setState(`${channelId}.statistics.errorsIn`, parseInt(entry['input errors'] || '0', 10), true);
-            await this.setState(`${channelId}.statistics.errorsOut`, parseInt(entry['output errors'] || '0', 10), true);
+            await this.setState(`${channelId}.statistics.packetsIn`, this.parseIntSafe(entry['received-packets']), true);
+            await this.setState(`${channelId}.statistics.packetsOut`, this.parseIntSafe(entry['sent-packets']), true);
+            await this.setState(`${channelId}.statistics.errorsIn`, this.parseIntSafe(entry['received-errors']), true);
+            await this.setState(`${channelId}.statistics.errorsOut`, this.parseIntSafe(entry['send-errors']), true);
         }
     }
     async updateArpTable(data) {
@@ -288,6 +288,16 @@ class OPNsense extends utils.Adapter {
     }
     sanitizeId(name) {
         return name.replace(/[^a-zA-Z0-9_-]/g, '_').replace(/_{2,}/g, '_').replace(/^_|_$/g, '');
+    }
+    parseIntSafe(value) {
+        if (typeof value === 'number') {
+            return value;
+        }
+        if (typeof value === 'string') {
+            const num = parseInt(value, 10);
+            return isNaN(num) ? 0 : num;
+        }
+        return 0;
     }
     parseNumber(value) {
         if (!value) {

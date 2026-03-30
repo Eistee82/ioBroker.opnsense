@@ -54,13 +54,18 @@ export interface InterfaceTrafficResponse {
 
 export interface InterfaceStatisticsEntry {
     name: string;
-    'bytes received': string;
-    'bytes transmitted': string;
-    'packets received': string;
-    'packets transmitted': string;
-    'input errors': string;
-    'output errors': string;
-    collisions: string;
+    mtu: number;
+    network: string;
+    address: string;
+    'received-packets': number;
+    'sent-packets': number;
+    'received-bytes': number;
+    'sent-bytes': number;
+    'received-errors': number;
+    'send-errors': number;
+    'dropped-packets': number;
+    collisions: number;
+    [key: string]: unknown;
 }
 
 export interface InterfaceStatisticsResponse {

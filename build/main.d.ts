@@ -15,6 +15,7 @@ declare class OPNsense extends utils.Adapter {
     private ensureChannel;
     private ensureState;
     private sanitizeId;
+    private parseIntSafe;
     private parseNumber;
     private onUnload;
 }
