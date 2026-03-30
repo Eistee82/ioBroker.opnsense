@@ -94,6 +94,9 @@ export class OPNsenseClient {
                 }
             });
 
+            if (method === 'POST') {
+                req.write('{}');
+            }
             req.end();
         });
     }

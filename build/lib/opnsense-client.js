@@ -70,6 +70,9 @@ export class OPNsenseClient {
                     reject(err);
                 }
             });
+            if (method === 'POST') {
+                req.write('{}');
+            }
             req.end();
         });
     }
