@@ -48,7 +48,7 @@
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "build/main.js",
-        "icon": "opnsense.svg",
+        "icon": "opnsense.png",
         "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/Eistee82/ioBroker.opnsense/main/admin/opnsense.png",
         "type": "hardware",

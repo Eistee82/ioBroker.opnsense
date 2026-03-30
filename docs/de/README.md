@@ -1,4 +1,4 @@
-![Logo](../../admin/opnsense.svg)
+![Logo](../../admin/opnsense.png)
 
 # ioBroker.opnsense — Dokumentation
 
