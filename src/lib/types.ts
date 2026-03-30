@@ -64,7 +64,7 @@ export interface InterfaceStatisticsEntry {
 }
 
 export interface InterfaceStatisticsResponse {
-    statistics: InterfaceStatisticsEntry[];
+    statistics: InterfaceStatisticsEntry[] | Record<string, Partial<InterfaceStatisticsEntry>>;
 }
 
 // --- Interface Names ---

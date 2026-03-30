@@ -51,7 +51,7 @@ export interface InterfaceStatisticsEntry {
     collisions: string;
 }
 export interface InterfaceStatisticsResponse {
-    statistics: InterfaceStatisticsEntry[];
+    statistics: InterfaceStatisticsEntry[] | Record<string, Partial<InterfaceStatisticsEntry>>;
 }
 export interface InterfaceNamesResponse {
     [technicalName: string]: string;

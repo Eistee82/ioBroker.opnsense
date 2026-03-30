@@ -181,7 +181,22 @@ class OPNsense extends utils.Adapter {
         }
     }
     async updateInterfaceStatistics(data) {
-        const stats = data.statistics || [];
+        // The API may return statistics as an object (keyed by interface) or as an array
+        const rawStats = data.statistics;
+        let stats;
+        if (Array.isArray(rawStats)) {
+            stats = rawStats;
+        }
+        else if (rawStats && typeof rawStats === 'object') {
+            stats = Object.entries(rawStats).map(([name, entry]) => ({
+                name,
+                ...(typeof entry === 'object' && entry !== null ? entry : {}),
+            }));
+        }
+        else {
+            this.log.debug(`Unexpected interface statistics format: ${JSON.stringify(data).substring(0, 200)}`);
+            return;
+        }
         const now = Date.now();
         for (const entry of stats) {
             const id = this.sanitizeId(entry.name);
