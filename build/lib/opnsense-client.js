@@ -87,10 +87,10 @@ export class OPNsenseClient {
         return this.request('GET', '/api/diagnostics/traffic/interface');
     }
     async getInterfaceStatistics() {
-        return this.request('GET', '/api/diagnostics/interface/getInterfaceStatistics');
+        return this.request('GET', '/api/diagnostics/interface/get_interface_statistics');
     }
     async getInterfaceNames() {
-        return this.request('GET', '/api/diagnostics/interface/getInterfaceNames');
+        return this.request('GET', '/api/diagnostics/interface/get_interface_names');
     }
     async getFirmwareInfo() {
         return this.request('GET', '/api/core/firmware/info');
@@ -102,7 +102,7 @@ export class OPNsenseClient {
         return this.request('GET', '/api/core/service/search');
     }
     async getArpTable() {
-        return this.request('GET', '/api/diagnostics/interface/searchArp');
+        return this.request('GET', '/api/diagnostics/interface/search_arp');
     }
     dispose() {
         this.agent.destroy();

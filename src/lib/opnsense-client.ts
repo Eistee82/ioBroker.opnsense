@@ -117,14 +117,14 @@ export class OPNsenseClient {
     async getInterfaceStatistics(): Promise<InterfaceStatisticsResponse> {
         return this.request<InterfaceStatisticsResponse>(
             'GET',
-            '/api/diagnostics/interface/getInterfaceStatistics',
+            '/api/diagnostics/interface/get_interface_statistics',
         );
     }
 
     async getInterfaceNames(): Promise<InterfaceNamesResponse> {
         return this.request<InterfaceNamesResponse>(
             'GET',
-            '/api/diagnostics/interface/getInterfaceNames',
+            '/api/diagnostics/interface/get_interface_names',
         );
     }
 
@@ -141,7 +141,7 @@ export class OPNsenseClient {
     }
 
     async getArpTable(): Promise<ArpResponse> {
-        return this.request<ArpResponse>('GET', '/api/diagnostics/interface/searchArp');
+        return this.request<ArpResponse>('GET', '/api/diagnostics/interface/search_arp');
     }
 
     dispose(): void {
