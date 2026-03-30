@@ -5,7 +5,6 @@ class OPNsense extends utils.Adapter {
     client;
     pollTimer;
     previousTraffic = new Map();
-    interfaceNames = new Map();
     constructor(options = {}) {
         super({
             ...options,
@@ -56,17 +55,8 @@ class OPNsense extends utils.Adapter {
             this.log.error(`Cannot connect to OPNsense: ${msg}`);
             return;
         }
-        // Fetch interface names once for display names
-        try {
-            const names = await this.client.getInterfaceNames();
-            for (const [technical, friendly] of Object.entries(names)) {
-                this.interfaceNames.set(technical, friendly);
-            }
-        }
-        catch (e) {
-            const msg = e instanceof Error ? e.message : String(e);
-            this.log.warn(`Could not fetch interface names: ${msg}`);
-        }
+        // Interface names are extracted from statistics response keys
+        // (get_interface_names has no ACL and is not accessible with restricted API users)
         // Initial poll
         await this.poll();
         // Start polling interval
@@ -188,10 +178,11 @@ class OPNsense extends utils.Adapter {
             stats = rawStats;
         }
         else if (rawStats && typeof rawStats === 'object') {
-            stats = Object.entries(rawStats).map(([name, entry]) => ({
-                name,
-                ...(typeof entry === 'object' && entry !== null ? entry : {}),
-            }));
+            // Keys are like "[LAN] (igc1) / 192.168.1.1", values contain { name: "igc1", ... }
+            stats = Object.entries(rawStats).map(([displayKey, entry]) => {
+                const node = typeof entry === 'object' && entry !== null ? entry : {};
+                return { displayKey, ...node };
+            });
         }
         else {
             this.log.debug(`Unexpected interface statistics format: ${JSON.stringify(data).substring(0, 200)}`);
@@ -199,9 +190,14 @@ class OPNsense extends utils.Adapter {
         }
         const now = Date.now();
         for (const entry of stats) {
-            const id = this.sanitizeId(entry.name);
+            // entry.name is the technical name (e.g. "igc1"), displayKey is "[LAN] (igc1) / 192.168.1.1"
+            const technicalName = entry.name;
+            const id = this.sanitizeId(technicalName);
             const channelId = `interfaces.${id}`;
-            const friendlyName = this.interfaceNames.get(entry.name) || entry.name;
+            // Extract friendly name from display key: "[LAN] (igc1) / ..." -> "LAN"
+            const displayKey = entry.displayKey || '';
+            const friendlyMatch = displayKey.match(/^\[([^\]]+)\]/);
+            const friendlyName = friendlyMatch ? friendlyMatch[1] : technicalName;
             await this.ensureChannel(channelId, friendlyName);
             for (const [stateId, def] of Object.entries(interfaceStates)) {
                 await this.ensureState(`${channelId}.${stateId}`, def);

@@ -3,7 +3,6 @@ declare class OPNsense extends utils.Adapter {
     private client;
     private pollTimer;
     private previousTraffic;
-    private interfaceNames;
     constructor(options?: Partial<utils.AdapterOptions>);
     private onReady;
     private poll;
