@@ -36,7 +36,7 @@ export class OPNsenseClient {
                 headers: {
                     Authorization: this.authHeader,
                     Accept: 'application/json',
-                    'Content-Type': 'application/json',
+                    ...(method === 'POST' ? { 'Content-Type': 'application/json' } : {}),
                 },
                 timeout: this.timeoutMs,
             }, (res) => {
