@@ -13,12 +13,16 @@
 
 ## OPNsense adapter for ioBroker
 
-Monitor your OPNsense firewall from ioBroker. This adapter connects to the OPNsense REST API and provides real-time data about gateways, network interfaces, traffic, services, and more.
+Monitor your [OPNsense](https://opnsense.org) firewall from ioBroker. This adapter connects to the OPNsense REST API and provides real-time data about gateways, network interfaces, traffic, services, and more.
 
 ## Documentation
 
 [English Documentation](./docs/en/README.md)
 [Deutsche Dokumentation](./docs/de/README.md)
+
+## Trademark Notice
+
+[OPNsense](https://opnsense.org) is a registered trademark of [Deciso B.V.](https://www.deciso.com/). The OPNsense logo is used in accordance with the [OPNsense legal guidelines](https://opnsense.org/legal-guidelines/) to identify this adapter as a tool for OPNsense integration. This project is not affiliated with or endorsed by Deciso B.V. or the OPNsense project.
 
 ## Changelog
 

@@ -2,7 +2,9 @@
 
 # ioBroker.opnsense — Dokumentation
 
-Ueberwache deine OPNsense Firewall mit ioBroker. Dieser Adapter nutzt die OPNsense REST API, um Gateway-Status, Interface-Traffic-Geschwindigkeit, Service-Zustaende, Firmware-Informationen und die ARP-Tabelle auszulesen.
+Ueberwache deine [OPNsense](https://opnsense.org) Firewall mit ioBroker. Dieser Adapter nutzt die OPNsense REST API, um Gateway-Status, Interface-Traffic-Geschwindigkeit, Service-Zustaende, Firmware-Informationen und die ARP-Tabelle auszulesen.
+
+> **Markenhinweis:** [OPNsense](https://opnsense.org) ist eine eingetragene Marke der [Deciso B.V.](https://www.deciso.com/). Das OPNsense-Logo wird gemaess den [OPNsense Legal Guidelines](https://opnsense.org/legal-guidelines/) verwendet, um diesen Adapter als Werkzeug fuer die OPNsense-Integration zu kennzeichnen. Dieses Projekt ist nicht mit Deciso B.V. oder dem OPNsense-Projekt verbunden und wird nicht von diesen unterstuetzt.
 
 ## Inhaltsverzeichnis
 
