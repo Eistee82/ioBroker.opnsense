@@ -46,6 +46,7 @@
         "authors": ["Eistee"],
         "keywords": ["opnsense", "firewall", "network", "monitoring", "gateway"],
         "license": "MIT",
+        "mode": "daemon",
         "platform": "Javascript/Node.js",
         "main": "build/main.js",
         "icon": "opnsense.svg",
