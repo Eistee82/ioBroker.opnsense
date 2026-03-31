@@ -158,15 +158,20 @@ class OPNsense extends utils.Adapter {
         }
     }
     async updateFirmwareInfo(data) {
-        this.log.debug(`Firmware: version=${data.product_version}, name=${data.product_name}, arch=${data.product_arch}`);
-        await this.setState('system.firmwareVersion', data.product_version || '', true);
-        await this.setState('system.productName', data.product_name || '', true);
-        await this.setState('system.productArch', data.product_arch || '', true);
+        const product = data.product || {};
+        const version = data.product_version || '';
+        const name = product.CORE_PRODUCT || product.CORE_NAME || data.product_id || '';
+        const arch = product.CORE_ARCH || '';
+        this.log.debug(`Firmware: version=${version}, name=${name}, arch=${arch}`);
+        await this.setState('system.firmwareVersion', version, true);
+        await this.setState('system.productName', name, true);
+        await this.setState('system.productArch', arch, true);
     }
     async updateFirmwareStatus(data) {
-        this.log.debug(`Firmware status: updates=${data.updates}, needs_reboot=${data.needs_reboot}, status=${data.status}, status_msg=${data.status_msg}`);
-        await this.setState('system.updateAvailable', (data.updates || 0) > 0, true);
-        await this.setState('system.updateCount', data.updates || 0, true);
+        const updateCount = Array.isArray(data.upgrade_packages) ? data.upgrade_packages.length : 0;
+        this.log.debug(`Firmware status: updateCount=${updateCount}, needs_reboot=${data.needs_reboot}, status=${data.status}, status_msg=${data.status_msg}`);
+        await this.setState('system.updateAvailable', updateCount > 0, true);
+        await this.setState('system.updateCount', updateCount, true);
         await this.setState('system.needsReboot', data.needs_reboot === '1', true);
     }
     async updateServices(data) {
@@ -216,8 +221,14 @@ class OPNsense extends utils.Adapter {
             return;
         }
         const now = Date.now();
-        this.log.debug(`Interface statistics: processing ${stats.length} entries`);
-        for (const entry of stats) {
+        // Filter: only process link-layer entries (network starts with "<Link#")
+        // Each interface appears multiple times: once for link-layer (total traffic) and once per IP address
+        const linkLayerStats = stats.filter((entry) => {
+            const network = entry.network || '';
+            return network.startsWith('<Link#');
+        });
+        this.log.debug(`Interface statistics: ${stats.length} total entries, ${linkLayerStats.length} link-layer entries`);
+        for (const entry of linkLayerStats) {
             // entry.name is the technical name (e.g. "igc1"), displayKey is "[LAN] (igc1) / 192.168.1.1"
             const technicalName = entry.name;
             const id = this.sanitizeId(technicalName);

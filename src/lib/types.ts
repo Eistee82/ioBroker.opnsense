@@ -83,10 +83,8 @@ export interface InterfaceNamesResponse {
 export interface FirmwareInfoResponse {
     product_id: string;
     product_version: string;
-    product_name: string;
-    product_arch: string;
-    product_time: string;
-    product_hash: string;
+    product: Record<string, string>;
+    [key: string]: unknown;
 }
 
 // --- Firmware Status ---
