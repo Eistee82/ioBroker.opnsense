@@ -157,46 +157,10 @@ export const interfaceStates: Record<string, StateDefinition> = {
 };
 
 export const interfaceTrafficStates: Record<string, StateDefinition> = {
-    bytesReceivedSpeed: {
-        type: 'number',
-        role: 'value',
-        name: 'Receive speed',
-        read: true,
-        write: false,
-        unit: 'B/s',
-        def: 0,
-    },
-    bytesTransmittedSpeed: {
-        type: 'number',
-        role: 'value',
-        name: 'Transmit speed',
-        read: true,
-        write: false,
-        unit: 'B/s',
-        def: 0,
-    },
-    bitsReceivedSpeed: {
-        type: 'number',
-        role: 'value',
-        name: 'Receive speed (bits)',
-        read: true,
-        write: false,
-        unit: 'bit/s',
-        def: 0,
-    },
-    bitsTransmittedSpeed: {
-        type: 'number',
-        role: 'value',
-        name: 'Transmit speed (bits)',
-        read: true,
-        write: false,
-        unit: 'bit/s',
-        def: 0,
-    },
     mbitsReceivedSpeed: {
         type: 'number',
         role: 'value',
-        name: 'Receive speed (Mbit)',
+        name: 'Receive speed',
         read: true,
         write: false,
         unit: 'Mbit/s',
@@ -205,7 +169,7 @@ export const interfaceTrafficStates: Record<string, StateDefinition> = {
     mbitsTransmittedSpeed: {
         type: 'number',
         role: 'value',
-        name: 'Transmit speed (Mbit)',
+        name: 'Transmit speed',
         read: true,
         write: false,
         unit: 'Mbit/s',
