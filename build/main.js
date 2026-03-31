@@ -267,6 +267,8 @@ class OPNsense extends utils.Adapter {
                     await this.setState(`${channelId}.traffic.bytesTransmittedSpeed`, Math.round(bytesOutPerSec), true);
                     await this.setState(`${channelId}.traffic.bitsReceivedSpeed`, Math.round(bytesInPerSec * 8), true);
                     await this.setState(`${channelId}.traffic.bitsTransmittedSpeed`, Math.round(bytesOutPerSec * 8), true);
+                    await this.setState(`${channelId}.traffic.mbitsReceivedSpeed`, Math.round(bytesInPerSec * 8 / 1000) / 1000, true);
+                    await this.setState(`${channelId}.traffic.mbitsTransmittedSpeed`, Math.round(bytesOutPerSec * 8 / 1000) / 1000, true);
                 }
             }
             this.previousTraffic.set(entry.name, {
