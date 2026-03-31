@@ -119,43 +119,37 @@ class OPNsense extends utils.Adapter {
         let anySuccess = false;
 
         if (gateways.status === 'fulfilled') {
-            await this.updateGateways(gateways.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('gateways', () => this.updateGateways(gateways.value)) || anySuccess;
         } else {
             this.log.debug(`Gateway status failed: ${gateways.reason}`);
         }
 
         if (firmwareInfo.status === 'fulfilled') {
-            await this.updateFirmwareInfo(firmwareInfo.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('firmware info', () => this.updateFirmwareInfo(firmwareInfo.value)) || anySuccess;
         } else {
             this.log.debug(`Firmware info failed: ${firmwareInfo.reason}`);
         }
 
         if (firmwareStatus.status === 'fulfilled') {
-            await this.updateFirmwareStatus(firmwareStatus.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('firmware status', () => this.updateFirmwareStatus(firmwareStatus.value)) || anySuccess;
         } else {
             this.log.debug(`Firmware status failed: ${firmwareStatus.reason}`);
         }
 
         if (services.status === 'fulfilled') {
-            await this.updateServices(services.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('services', () => this.updateServices(services.value)) || anySuccess;
         } else {
             this.log.debug(`Services failed: ${services.reason}`);
         }
 
         if (ifStats.status === 'fulfilled') {
-            await this.updateInterfaceStatistics(ifStats.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('interface statistics', () => this.updateInterfaceStatistics(ifStats.value)) || anySuccess;
         } else {
             this.log.debug(`Interface statistics failed: ${ifStats.reason}`);
         }
 
         if (arp.status === 'fulfilled') {
-            await this.updateArpTable(arp.value);
-            anySuccess = true;
+            anySuccess = await this.safeUpdate('ARP table', () => this.updateArpTable(arp.value)) || anySuccess;
         } else {
             this.log.debug(`ARP table failed: ${arp.reason}`);
         }
@@ -163,6 +157,17 @@ class OPNsense extends utils.Adapter {
         await this.setState('info.connection', anySuccess, true);
         if (anySuccess) {
             await this.setState('info.lastUpdate', Date.now(), true);
+        }
+    }
+
+    private async safeUpdate(name: string, fn: () => Promise<void>): Promise<boolean> {
+        try {
+            await fn();
+            return true;
+        } catch (e: unknown) {
+            const msg = e instanceof Error ? e.message : String(e);
+            this.log.error(`Error updating ${name}: ${msg}`);
+            return false;
         }
     }
 

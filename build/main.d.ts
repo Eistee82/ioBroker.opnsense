@@ -6,6 +6,7 @@ declare class OPNsense extends utils.Adapter {
     constructor(options?: Partial<utils.AdapterOptions>);
     private onReady;
     private poll;
+    private safeUpdate;
     private updateGateways;
     private updateFirmwareInfo;
     private updateFirmwareStatus;
