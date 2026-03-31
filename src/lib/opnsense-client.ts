@@ -12,19 +12,26 @@ import type {
     ArpResponse,
 } from './types.js';
 
+type LogFunction = (msg: string) => void;
+
 export class OPNsenseClient {
     private readonly baseUrl: string;
     private readonly authHeader: string;
     private readonly agent: https.Agent | http.Agent;
     private readonly timeoutMs: number;
     private readonly useHttps: boolean;
+    private readonly logDebug: LogFunction;
 
-    constructor(private readonly config: OPNsenseClientConfig) {
+    constructor(
+        private readonly config: OPNsenseClientConfig,
+        logDebug?: LogFunction,
+    ) {
         this.useHttps = config.port === 443 || config.port !== 80;
         const protocol = this.useHttps ? 'https' : 'http';
         this.baseUrl = `${protocol}://${config.host}:${config.port}`;
         this.authHeader = `Basic ${Buffer.from(`${config.apiKey}:${config.apiSecret}`).toString('base64')}`;
         this.timeoutMs = config.requestTimeout * 1000;
+        this.logDebug = logDebug || (() => {});
 
         if (this.useHttps) {
             this.agent = new https.Agent({
@@ -42,6 +49,9 @@ export class OPNsenseClient {
         return new Promise((resolve, reject) => {
             const url = new URL(path, this.baseUrl);
             const mod = this.useHttps ? https : http;
+            const startTime = Date.now();
+
+            this.logDebug(`API ${method} ${path} ...`);
 
             const req = mod.request(
                 url,
@@ -60,16 +70,45 @@ export class OPNsenseClient {
                     res.on('data', (chunk: Buffer) => chunks.push(chunk));
                     res.on('end', () => {
                         const body = Buffer.concat(chunks).toString('utf-8');
+                        const elapsed = Date.now() - startTime;
+
+                        this.logDebug(`API ${method} ${path} -> ${res.statusCode} (${elapsed}ms, ${body.length} bytes)`);
 
                         if (!res.statusCode || res.statusCode < 200 || res.statusCode >= 300) {
+                            this.logDebug(`API ${method} ${path} error body: ${body.substring(0, 500)}`);
                             reject(new Error(`HTTP ${res.statusCode}: ${body.substring(0, 200)}`));
                             return;
                         }
 
                         try {
                             const data = JSON.parse(body) as T;
+                            // Log the top-level keys and structure of the response
+                            if (typeof data === 'object' && data !== null) {
+                                const keys = Object.keys(data);
+                                this.logDebug(
+                                    `API ${path} response keys: [${keys.join(', ')}]`,
+                                );
+                                // Log structure details for each top-level key
+                                for (const key of keys) {
+                                    const val = (data as Record<string, unknown>)[key];
+                                    if (Array.isArray(val)) {
+                                        this.logDebug(`  ${key}: Array[${val.length}]${val.length > 0 ? ` first=${JSON.stringify(val[0]).substring(0, 300)}` : ''}`);
+                                    } else if (typeof val === 'object' && val !== null) {
+                                        const subKeys = Object.keys(val);
+                                        this.logDebug(`  ${key}: Object{${subKeys.length} keys}${subKeys.length > 0 ? ` keys=[${subKeys.slice(0, 5).join(', ')}${subKeys.length > 5 ? '...' : ''}]` : ''}`);
+                                        // Log first entry details
+                                        if (subKeys.length > 0) {
+                                            const firstVal = (val as Record<string, unknown>)[subKeys[0]];
+                                            this.logDebug(`  ${key}["${subKeys[0]}"] = ${JSON.stringify(firstVal).substring(0, 400)}`);
+                                        }
+                                    } else {
+                                        this.logDebug(`  ${key}: ${typeof val} = ${JSON.stringify(val).substring(0, 200)}`);
+                                    }
+                                }
+                            }
                             resolve(data);
                         } catch {
+                            this.logDebug(`API ${path} invalid JSON: ${body.substring(0, 300)}`);
                             reject(new Error(`Invalid JSON response from ${path}`));
                         }
                     });

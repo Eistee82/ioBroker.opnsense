@@ -53,14 +53,17 @@ class OPNsense extends utils.Adapter {
             config.pollInterval = 10;
         }
 
-        this.client = new OPNsenseClient({
-            host: config.host,
-            port: config.port || 443,
-            apiKey: config.apiKey,
-            apiSecret: config.apiSecret,
-            sslVerify: config.sslVerify !== false,
-            requestTimeout: config.requestTimeout || 10,
-        });
+        this.client = new OPNsenseClient(
+            {
+                host: config.host,
+                port: config.port || 443,
+                apiKey: config.apiKey,
+                apiSecret: config.apiSecret,
+                sslVerify: config.sslVerify !== false,
+                requestTimeout: config.requestTimeout || 10,
+            },
+            (msg: string) => this.log.debug(msg),
+        );
 
         // Create static state objects
         await this.ensureChannel('system', 'System information');
@@ -175,7 +178,12 @@ class OPNsense extends utils.Adapter {
 
     private async updateGateways(data: GatewayStatusResponse): Promise<void> {
         const items = data.items || [];
+        this.log.debug(`Gateways: ${items.length} items found`);
+        if (items.length === 0) {
+            this.log.debug(`Gateways raw data: ${JSON.stringify(data).substring(0, 500)}`);
+        }
         for (const gw of items) {
+            this.log.debug(`Gateway "${gw.name}": status=${gw.status}, loss=${gw.loss}, delay=${gw.delay}, address=${gw.address}`);
             const id = this.sanitizeId(gw.name);
             const channelId = `gateways.${id}`;
 
@@ -194,12 +202,14 @@ class OPNsense extends utils.Adapter {
     }
 
     private async updateFirmwareInfo(data: FirmwareInfoResponse): Promise<void> {
+        this.log.debug(`Firmware: version=${data.product_version}, name=${data.product_name}, arch=${data.product_arch}`);
         await this.setState('system.firmwareVersion', data.product_version || '', true);
         await this.setState('system.productName', data.product_name || '', true);
         await this.setState('system.productArch', data.product_arch || '', true);
     }
 
     private async updateFirmwareStatus(data: FirmwareStatusResponse): Promise<void> {
+        this.log.debug(`Firmware status: updates=${data.updates}, needs_reboot=${data.needs_reboot}, status=${data.status}, status_msg=${data.status_msg}`);
         await this.setState('system.updateAvailable', (data.updates || 0) > 0, true);
         await this.setState('system.updateCount', data.updates || 0, true);
         await this.setState('system.needsReboot', data.needs_reboot === '1', true);
@@ -207,7 +217,12 @@ class OPNsense extends utils.Adapter {
 
     private async updateServices(data: ServicesResponse): Promise<void> {
         const rows = data.rows || [];
+        this.log.debug(`Services: ${rows.length} services found (total=${data.total}, rowCount=${data.rowCount})`);
+        if (rows.length === 0) {
+            this.log.debug(`Services raw data: ${JSON.stringify(data).substring(0, 500)}`);
+        }
         for (const svc of rows) {
+            this.log.debug(`Service "${svc.name}": running=${svc.running}, locked=${svc.locked}, desc="${svc.description}"`);
             const id = this.sanitizeId(svc.name);
             const channelId = `services.${id}`;
 
@@ -224,6 +239,16 @@ class OPNsense extends utils.Adapter {
     private async updateInterfaceStatistics(data: InterfaceStatisticsResponse): Promise<void> {
         // The API may return statistics as an object (keyed by interface) or as an array
         const rawStats = data.statistics;
+        this.log.debug(`Interface statistics type: ${Array.isArray(rawStats) ? 'Array' : typeof rawStats}`);
+        if (rawStats && typeof rawStats === 'object' && !Array.isArray(rawStats)) {
+            const keys = Object.keys(rawStats);
+            this.log.debug(`Interface statistics keys (${keys.length}): ${keys.join(', ')}`);
+            if (keys.length > 0) {
+                const firstKey = keys[0];
+                const firstVal = (rawStats as Record<string, unknown>)[firstKey];
+                this.log.debug(`Interface statistics first entry ["${firstKey}"]: ${JSON.stringify(firstVal).substring(0, 500)}`);
+            }
+        }
         let stats: InterfaceStatisticsEntry[];
         if (Array.isArray(rawStats)) {
             stats = rawStats;
@@ -239,6 +264,7 @@ class OPNsense extends utils.Adapter {
         }
         const now = Date.now();
 
+        this.log.debug(`Interface statistics: processing ${stats.length} entries`);
         for (const entry of stats) {
             // entry.name is the technical name (e.g. "igc1"), displayKey is "[LAN] (igc1) / 192.168.1.1"
             const technicalName = entry.name;
@@ -248,6 +274,7 @@ class OPNsense extends utils.Adapter {
             const displayKey = (entry as InterfaceStatisticsEntry & { displayKey?: string }).displayKey || '';
             const friendlyMatch = displayKey.match(/^\[([^\]]+)\]/);
             const friendlyName = friendlyMatch ? friendlyMatch[1] : technicalName;
+            this.log.debug(`Interface "${technicalName}" (${friendlyName}): received-bytes=${entry['received-bytes']}, sent-bytes=${entry['sent-bytes']}, received-packets=${entry['received-packets']}, sent-packets=${entry['sent-packets']}`);
 
             await this.ensureChannel(channelId, friendlyName);
             for (const [stateId, def] of Object.entries(interfaceStates)) {
@@ -268,6 +295,7 @@ class OPNsense extends utils.Adapter {
 
             const bytesIn = this.parseIntSafe(entry['received-bytes']);
             const bytesOut = this.parseIntSafe(entry['sent-bytes']);
+            this.log.debug(`Interface "${technicalName}" parsed: bytesIn=${bytesIn}, bytesOut=${bytesOut}`);
 
             // Calculate traffic speed (delta)
             const prev = this.previousTraffic.get(entry.name);
@@ -276,6 +304,7 @@ class OPNsense extends utils.Adapter {
                 if (timeDeltaSec > 0) {
                     const bytesInPerSec = Math.max(0, (bytesIn - prev.bytesIn) / timeDeltaSec);
                     const bytesOutPerSec = Math.max(0, (bytesOut - prev.bytesOut) / timeDeltaSec);
+                    this.log.debug(`Interface "${technicalName}" speed: ${Math.round(bytesInPerSec)} B/s in, ${Math.round(bytesOutPerSec)} B/s out (delta=${timeDeltaSec.toFixed(1)}s)`);
 
                     await this.setState(`${channelId}.traffic.bytesReceivedSpeed`, Math.round(bytesInPerSec), true);
                     await this.setState(`${channelId}.traffic.bytesTransmittedSpeed`, Math.round(bytesOutPerSec), true);
@@ -300,6 +329,10 @@ class OPNsense extends utils.Adapter {
 
     private async updateArpTable(data: ArpResponse): Promise<void> {
         const rows = data.rows || [];
+        this.log.debug(`ARP table: ${rows.length} entries (total=${data.total}, rowCount=${data.rowCount})`);
+        if (rows.length === 0) {
+            this.log.debug(`ARP raw data: ${JSON.stringify(data).substring(0, 500)}`);
+        }
         for (const entry of rows) {
             if (!entry.ip) {
                 continue;

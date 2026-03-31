@@ -1,4 +1,5 @@
 import type { OPNsenseClientConfig, GatewayStatusResponse, InterfaceTrafficResponse, InterfaceStatisticsResponse, InterfaceNamesResponse, FirmwareInfoResponse, FirmwareStatusResponse, ServicesResponse, ArpResponse } from './types.js';
+type LogFunction = (msg: string) => void;
 export declare class OPNsenseClient {
     private readonly config;
     private readonly baseUrl;
@@ -6,7 +7,8 @@ export declare class OPNsenseClient {
     private readonly agent;
     private readonly timeoutMs;
     private readonly useHttps;
-    constructor(config: OPNsenseClientConfig);
+    private readonly logDebug;
+    constructor(config: OPNsenseClientConfig, logDebug?: LogFunction);
     private request;
     testConnection(): Promise<boolean>;
     getGatewayStatus(): Promise<GatewayStatusResponse>;
@@ -19,4 +21,5 @@ export declare class OPNsenseClient {
     getArpTable(): Promise<ArpResponse>;
     dispose(): void;
 }
+export {};
 //# sourceMappingURL=opnsense-client.d.ts.map
